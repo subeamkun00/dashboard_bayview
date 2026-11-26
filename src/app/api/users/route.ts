@@ -136,7 +136,7 @@ export async function PATCH(request: NextRequest) {
     changes = { access_enabled: body.access_enabled };
   } else if (body.action === "contact") {
     const parsed = contactFields(body);
-    if ("error" in parsed) return fail(parsed.error);
+    if ("error" in parsed) return fail(parsed.error ?? "Invalid input.");
     changes = parsed;
   } else {
     if (
@@ -184,7 +184,7 @@ export async function PATCH(request: NextRequest) {
     )
       return fail("Choose whether this employee has all-department document access.");
     const contact = body.first_name !== undefined ? contactFields(body) : null;
-    if (contact && "error" in contact) return fail(contact.error);
+    if (contact && "error" in contact) return fail(contact.error ?? "Invalid input.");
     changes = {
       ...(contact && !("error" in contact) && contact),
       department: body.department.trim(),

@@ -1,0 +1,15 @@
+import { createBrowserClient } from "@supabase/ssr";
+export const isConfigured = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+);
+let client: ReturnType<typeof createBrowserClient> | null = null;
+export function browserClient() {
+  if (!isConfigured) return null;
+  if (!client)
+    client = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    );
+  return client;
+}
